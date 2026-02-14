@@ -5,15 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Solar Mining Strategy Tool</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.50.0/build/stlite.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@stlite/mountable@0.50.0/build/stlite.css" />
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.50.0/build/stlite.js"></script>
+    <script src="https://unpkg.com/@stlite/mountable@0.50.0/build/stlite.js"></script>
     <script>
       stlite.mount(
         {
-          requirements: ["streamlit", "pandas", "numpy"],
+          // Only load what we strictly need for V1
+          requirements: ["streamlit"],
           entrypoint: "app.py",
           files: {
             "app.py": {
