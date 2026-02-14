@@ -19,11 +19,62 @@
     <script>
       stlite.mount(
         {
-          requirements: ["streamlit"], // Load only basic streamlit for V1
+          requirements: ["streamlit"],
           entrypoint: "app.py",
           files: {
             "app.py": {
-              url: "app.py",
+              // WE EMBED THE CODE DIRECTLY HERE
+              content: `
+import streamlit as st
+
+# Miner Specifications
+MINER_SPECS = {
+    'Antminer S21': {'hashrate': 200, 'power': 3500},
+    'Whatsminer M60S': {'hashrate': 186, 'power': 3600}
+}
+
+st.set_page_config(page_title="Solar Bitcoin Miner Economics", page_icon="☀️", layout="wide")
+
+# Custom Styling
+st.markdown("""
+    <style>
+    .main { background-color: #0e1117; }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.title("☀️ Solar Bitcoin Mining Economics")
+st.markdown("---")
+
+# Sidebar
+st.sidebar.header("System Inputs")
+solar_size = st.sidebar.number_input("Solar System Size (kW)", value=10.0, step=1.0)
+miner_model = st.sidebar.selectbox("Miner Model", options=list(MINER_SPECS.keys()))
+miner_qty = st.sidebar.number_input("Miner Quantity", value=1, min_value=1, step=1)
+grid_cost = st.sidebar.number_input("Electricity Cost (Grid) ($/kWh)", value=0.12, step=0.01, format="%.2f")
+btc_price = st.sidebar.number_input("Bitcoin Price ($)", value=95000, step=500)
+hashprice = st.sidebar.number_input("Network Hashprice ($/TH/day)", value=0.08, step=0.005, format="%.4f")
+
+# Logic
+spec = MINER_SPECS[miner_model]
+total_hashrate = spec['hashrate'] * miner_qty
+total_power_watts = spec['power'] * miner_qty
+
+daily_revenue = total_hashrate * hashprice
+daily_cost = (total_power_watts / 1000) * 24 * grid_cost
+net_profit = daily_revenue - daily_cost
+
+# Visuals
+col1, col2, col3 = st.columns(3)
+col1.metric("Daily Revenue", f"\${daily_revenue:,.2f}")
+col2.metric("Daily Power Cost", f"\${daily_cost:,.2f}")
+col3.metric("Net Profit", f"\${net_profit:,.2f}", delta=f"\${net_profit:,.2f}")
+
+if net_profit < 0:
+    st.warning("⚠️ Unprofitable at current Grid Rates")
+
+st.markdown("---")
+st.write(f"**Hardware Summary:** {miner_qty}x {miner_model} ({total_hashrate} TH/s total)")
+`,
             },
           },
         },
