@@ -45,9 +45,9 @@ miner_watts = st.sidebar.number_input("Miner Power (Watts)", value=3500, step=10
 miner_qty = st.sidebar.number_input("Miner Quantity", value=1, min_value=1, step=1)
 
 st.sidebar.subheader("Market & Energy")
-grid_cost = st.sidebar.number_input("Electricity Cost (Grid) (\\$/kWh)", value=0.12, step=0.01, format="%.2f")
-btc_price = st.sidebar.number_input("Bitcoin Price (\\$)", value=95000, step=500)
-hashprice = st.sidebar.number_input("Network Hashprice (\\$/TH/day)", value=0.08, step=0.005, format="%.4f")
+grid_cost = st.sidebar.number_input("Electricity Cost (Grid) ($/kWh)", value=0.12, step=0.01, format="%.2f")
+btc_price = st.sidebar.number_input("Bitcoin Price ($)", value=95000, step=500)
+hashprice = st.sidebar.number_input("Network Hashprice ($/TH/day)", value=0.08, step=0.005, format="%.4f")
 
 # Logic
 total_hashrate = miner_hashrate * miner_qty
@@ -59,9 +59,9 @@ net_profit = daily_revenue - daily_cost
 
 # Visuals
 col1, col2, col3 = st.columns(3)
-col1.metric("Daily Revenue", f"\\${daily_revenue:,.2f}")
-col2.metric("Daily Power Cost", f"\\${daily_cost:,.2f}")
-col3.metric("Net Profit", f"\\${net_profit:,.2f}", delta=f"\\${net_profit:,.2f}")
+col1.metric("Daily Revenue", f"\${daily_revenue:,.2f}")
+col2.metric("Daily Power Cost", f"\${daily_cost:,.2f}")
+col3.metric("Net Profit", f"\${net_profit:,.2f}", delta=f"\${net_profit:,.2f}")
 
 if net_profit < 0:
     st.warning("⚠️ Unprofitable at current Grid Rates")
